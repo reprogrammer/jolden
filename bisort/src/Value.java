@@ -1,10 +1,8 @@
-
 /**
- * A class that represents a value to be sorted by the <tt>BiSort</tt> 
- * algorithm.  We represents a values as a node in a binary tree.
+ * A class that represents a value to be sorted by the <tt>BiSort</tt> algorithm. We represents a
+ * values as a node in a binary tree.
  **/
-public class Value
-{
+public class Value {
   private int value;
   private Value left;
   private Value right;
@@ -19,30 +17,29 @@ public class Value
 
   /**
    * Constructor for a node representing a value in the bitonic sort tree.
+   * 
    * @param v the integer value which is the sort key
    **/
-  public Value(int v)
-  {
+  public Value(int v) {
     value = v;
     left = right = null;
   }
 
   /**
    * Create a random tree of value to be sorted using the bitonic sorting algorithm.
-   *
+   * 
    * @param size the number of values to create.
    * @param seed a random number generator seed value
    * @return the root of the (sub) tree.
    **/
-  public static Value createTree(int size, int seed)
-  {
+  public static Value createTree(int size, int seed) {
     if (size > 1) {
       seed = random(seed);
       int next_val = seed % RANGE;
-      
+
       Value retval = new Value(next_val);
-      retval.left = createTree(size/2, seed);
-      retval.right = createTree(size/2, skiprand(seed, size+1));
+      retval.left = createTree(size / 2, seed);
+      retval.right = createTree(size / 2, skiprand(seed, size + 1));
       return retval;
     } else {
       return null;
@@ -51,18 +48,17 @@ public class Value
 
   /**
    * Perform a bitonic sort based upon the Bilardi and Nicolau algorithm.
-   *
+   * 
    * @param spr_val the "spare" value in the algorithm.
    * @param direction the direction of the sort (forward or backward)
    * @return the new "spare" value.
    **/
-  public int bisort(int spr_val, boolean direction)
-  {
+  public int bisort(int spr_val, boolean direction) {
     if (left == null) {
       if ((value > spr_val) ^ direction) {
-	int tmpval = spr_val;
-	spr_val = value;
-	value = tmpval;
+        int tmpval = spr_val;
+        spr_val = value;
+        value = tmpval;
       }
     } else {
       int val = value;
@@ -75,15 +71,14 @@ public class Value
   }
 
   /**
-   * Perform the merge part of the bitonic sort.  The merge part does
-   * the actualy sorting.
+   * Perform the merge part of the bitonic sort. The merge part does the actualy sorting.
+   * 
    * @param spr_val the "spare" value in the algorithm.
    * @param direction the direction of the sort (forward or backward)
    * @return the new "spare" value
    **/
-  public int bimerge(int spr_val, boolean direction)
-  {
-    int   rv = value;
+  public int bimerge(int spr_val, boolean direction) {
+    int rv = value;
     Value pl = left;
     Value pr = right;
 
@@ -92,37 +87,37 @@ public class Value
       value = spr_val;
       spr_val = rv;
     }
-    
+
     while (pl != null) {
-      int   lv  = pl.value;
+      int lv = pl.value;
       Value pll = pl.left;
       Value plr = pl.right;
-      rv        = pr.value;
+      rv = pr.value;
       Value prl = pr.left;
       Value prr = pr.right;
 
       boolean elementexchange = (lv > rv) ^ direction;
       if (rightexchange) {
-	if (elementexchange) {
-	  pl.swapValRight(pr);
-	  pl = pll;
-	  pr = prl;
-	} else {
-	  pl = plr;
-	  pr = prr;
-	}
+        if (elementexchange) {
+          pl.swapValRight(pr);
+          pl = pll;
+          pr = prl;
+        } else {
+          pl = plr;
+          pr = prr;
+        }
       } else {
-	if (elementexchange) {
-	  pl.swapValLeft(pr);
-	  pl = plr;
-	  pr = prr;
-	} else {
-	  pl = pll;
-	  pr = prl;
-	}
+        if (elementexchange) {
+          pl.swapValLeft(pr);
+          pl = plr;
+          pr = prr;
+        } else {
+          pl = pll;
+          pr = prl;
+        }
       }
     }
-    
+
     if (left != null) {
       value = left.bimerge(value, direction);
       spr_val = right.bimerge(spr_val, direction);
@@ -132,83 +127,80 @@ public class Value
 
   /**
    * Swap the values and the right subtrees.
+   * 
    * @param n the other subtree involved in the swap.
    **/
-  public void swapValRight(Value n)
-  {
-    int   tmpv = n.value;
+  public void swapValRight(Value n) {
+    int tmpv = n.value;
     Value tmpr = n.right;
 
     n.value = value;
     n.right = right;
-    
+
     value = tmpv;
     right = tmpr;
   }
 
   /**
    * Swap the values and the left subtrees.
+   * 
    * @param n the other subtree involved in the swap.
    **/
-  public void swapValLeft(Value n)
-  {
-    int   tmpv = n.value;
+  public void swapValLeft(Value n) {
+    int tmpv = n.value;
     Value tmpl = n.left;
-    
+
     n.value = value;
-    n.left  = left;
+    n.left = left;
 
     value = tmpv;
-    left  = tmpl;
+    left = tmpl;
   }
 
   /**
    * Print out the nodes in the binary tree in infix order.
    **/
-  public void inOrder()
-  {
-    if (left != null)
-      left.inOrder();
+  public void inOrder() {
+    if (left != null) left.inOrder();
     System.out.println(value + " " + hashCode());
-    if (right != null)
-      right.inOrder();
+    if (right != null) right.inOrder();
   }
-  
+
 
   /**
-   * A random generator.  The original Olden benchmark uses its
-   * own random generator.  We use the same one in the Java version.
+   * A random generator. The original Olden benchmark uses its own random generator. We use the same
+   * one in the Java version.
+   * 
    * @return the next random number in the sequence.
    **/
-  private static int mult(int p, int q)
-  {
-    int p1 = p/CONST_m1; 
-    int p0 = p%CONST_m1;
-    int q1 = q/CONST_m1; 
-    int q0 = q%CONST_m1;
-    return (((p0*q1+p1*q0) % CONST_m1) * CONST_m1+p0*q0);
+  private static int mult(int p, int q) {
+    int p1 = p / CONST_m1;
+    int p0 = p % CONST_m1;
+    int q1 = q / CONST_m1;
+    int q0 = q % CONST_m1;
+    return (((p0 * q1 + p1 * q0) % CONST_m1) * CONST_m1 + p0 * q0);
   }
 
   /**
    * A routine to skip the next <i>n</i> random numbers.
+   * 
    * @param seed the current random no. seed
    * @param n the number of numbers to skip
    **/
-  private static int skiprand(int seed, int n)
-  {
-    for (; n != 0; n--) seed = random(seed);
+  private static int skiprand(int seed, int n) {
+    for (; n != 0; n--)
+      seed = random(seed);
     return seed;
   }
 
   /**
    * Return a random number based upon the seed value.
+   * 
    * @param seed the random number seed value
    * @return a random number based upon the seed value.
    **/
-  public static int random(int seed)
-  {
+  public static int random(int seed) {
     int tmp = mult(seed, CONST_b) + 1;
     return tmp;
   }
 }
-
