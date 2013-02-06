@@ -1,0 +1,3 @@
+[submodule "dependencies/google-styleguide"]
+	path = dependencies/google-styleguide
+	url = https://reprogrammer@bitbucket.org/reprogrammer/google-styleguide.git
