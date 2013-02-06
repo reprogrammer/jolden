@@ -4,10 +4,12 @@ ECLIPSE_HOME ?= $(HOME)/apps/eclipse/installations/latest
 
 ECLIPSE = $(ECLIPSE_HOME)/eclipse
 
+DEPENDENCIES_FOLDER = ../dependencies
+
 # See
 # http://www.peterfriese.de/formatting-your-code-using-the-eclipse-code-formatter/
 ECLIPSE_JAVA_CODE_FORMATTER =\
-			     /home/mvakili2/git/google-styleguide/variants/eclipse-java-google-style/.settings/org.eclipse.jdt.core.prefs
+			     $(DEPENDENCIES_FOLDER)/google-styleguide/variants/eclipse-java-google-style/.settings/org.eclipse.jdt.core.prefs
 
 ECLIPSE_OPTS = -nosplash -application org.eclipse.jdt.core.JavaCodeFormatter\
 	       -config $(ECLIPSE_JAVA_CODE_FORMATTER)
