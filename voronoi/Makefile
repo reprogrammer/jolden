@@ -1,0 +1,4 @@
+PROGRAM ?= voronoi
+
+include ../Makefile
+
