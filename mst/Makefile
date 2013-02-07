@@ -1,0 +1,4 @@
+PROGRAM ?= mst
+
+include ../Makefile
+
