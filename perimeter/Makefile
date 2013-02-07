@@ -1,0 +1,4 @@
+PROGRAM ?= perimeter
+
+include ../Makefile
+
