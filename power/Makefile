@@ -1,0 +1,4 @@
+PROGRAM ?= power
+
+include ../Makefile
+
