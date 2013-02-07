@@ -1,0 +1,4 @@
+PROGRAM ?= health
+
+include ../Makefile
+
