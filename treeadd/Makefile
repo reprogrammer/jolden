@@ -1,0 +1,4 @@
+PROGRAM ?= treeadd
+
+include ../Makefile
+

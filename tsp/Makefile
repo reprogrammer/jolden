@@ -1,0 +1,4 @@
+PROGRAM ?= tsp
+
+include ../Makefile
+

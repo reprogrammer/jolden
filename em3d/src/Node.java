@@ -1,13 +1,11 @@
-
 import java.util.Enumeration;
 import java.util.Random;
 
-/** 
- * This class implements nodes (both E- and H-nodes) of the EM graph. Sets
- * up random neighbors and propagates field values among neighbors.
+/**
+ * This class implements nodes (both E- and H-nodes) of the EM graph. Sets up random neighbors and
+ * propagates field values among neighbors.
  */
-public final class Node 
-{
+public final class Node {
   /**
    * The value of the node.
    **/
@@ -33,8 +31,7 @@ public final class Node
    **/
   int fromCount;
   /**
-   * Used to create the fromEdges - keeps track of the number of edges that have
-   * been added
+   * Used to create the fromEdges - keeps track of the number of edges that have been added
    **/
   int fromLength;
 
@@ -43,20 +40,18 @@ public final class Node
    **/
   private static Random rand;
 
-  /** 
-   * Initialize the random number generator 
+  /**
+   * Initialize the random number generator
    **/
-  public static void initSeed(long seed)
-  {
+  public static void initSeed(long seed) {
     rand = new Random(seed);
   }
 
-  /** 
-   * Constructor for a node with given `degree'.   The value of the
-   * node is initialized to a random value.
+  /**
+   * Constructor for a node with given `degree'. The value of the node is initialized to a random
+   * value.
    **/
-  public Node(int degree) 
-  {
+  public Node(int degree) {
     value = rand.nextDouble();
     // create empty array for holding toNodes
     toNodes = new Node[degree];
@@ -69,14 +64,14 @@ public final class Node
   }
 
   /**
-   * Create the linked list of E or H nodes.  We create a table which is used
-   * later to create links among the nodes.
+   * Create the linked list of E or H nodes. We create a table which is used later to create links
+   * among the nodes.
+   * 
    * @param size the no. of nodes to create
    * @param degree the out degree of each node
    * @return a table containing all the nodes.
    **/
-  public static Node[] fillTable(int size, int degree)
-  {
+  public static Node[] fillTable(int size, int degree) {
     Node[] table = new Node[size];
 
     Node prevNode = new Node(degree);
@@ -90,31 +85,30 @@ public final class Node
     return table;
   }
 
-  /** 
-   * Create unique `degree' neighbors from the nodes given in nodeTable.
-   * We do this by selecting a random node from the give nodeTable to
-   * be neighbor. If this neighbor has been previously selected, then
-   * a different random neighbor is chosen.
+  /**
+   * Create unique `degree' neighbors from the nodes given in nodeTable. We do this by selecting a
+   * random node from the give nodeTable to be neighbor. If this neighbor has been previously
+   * selected, then a different random neighbor is chosen.
+   * 
    * @param nodeTable the list of nodes to choose from.
    **/
-  public void makeUniqueNeighbors(Node[] nodeTable)
-  {
+  public void makeUniqueNeighbors(Node[] nodeTable) {
     for (int filled = 0; filled < toNodes.length; filled++) {
       int k;
       Node otherNode;
 
       do {
-	// generate a random number in the correct range
-	int index = rand.nextInt();
-	if (index < 0) index = -index;
-	index = index % nodeTable.length;
+        // generate a random number in the correct range
+        int index = rand.nextInt();
+        if (index < 0) index = -index;
+        index = index % nodeTable.length;
 
-	// find a node with the random index in the given table
-	otherNode = nodeTable[index];
+        // find a node with the random index in the given table
+        otherNode = nodeTable[index];
 
-	for (k = 0; k < filled; k++) {
-	  if (otherNode == toNodes[filled]) break;
-	}
+        for (k = 0; k < filled; k++) {
+          if (otherNode == toNodes[filled]) break;
+        }
       } while (k < filled);
 
       // other node is definitely unique among "filled" toNodes
@@ -125,25 +119,22 @@ public final class Node
     }
   }
 
-  /** 
-   * Allocate the right number of FromNodes for this node. This
-   * step can only happen once we know the right number of from nodes
-   * to allocate. Can be done after unique neighbors are created and known.
-   *
+  /**
+   * Allocate the right number of FromNodes for this node. This step can only happen once we know
+   * the right number of from nodes to allocate. Can be done after unique neighbors are created and
+   * known.
+   * 
    * It also initializes random coefficients on the edges.
    **/
-  public void makeFromNodes()
-  {
+  public void makeFromNodes() {
     fromNodes = new Node[fromCount]; // nodes fill be filled in later
     coeffs = new double[fromCount];
   }
 
   /**
-   * Fill in the fromNode field in "other" nodes which are pointed to
-   * by this node.
+   * Fill in the fromNode field in "other" nodes which are pointed to by this node.
    **/
-  public void updateFromNodes()
-  {
+  public void updateFromNodes() {
     for (int i = 0; i < toNodes.length; i++) {
       Node otherNode = toNodes[i];
       int count = otherNode.fromLength++;
@@ -152,12 +143,10 @@ public final class Node
     }
   }
 
-  /** 
-   * Get the new value of the current node based on its neighboring
-   * from_nodes and coefficients.
+  /**
+   * Get the new value of the current node based on its neighboring from_nodes and coefficients.
    **/
-  public void computeNewValue()
-  {
+  public void computeNewValue() {
     for (int i = 0; i < fromCount; i++) {
       value -= coeffs[i] * fromNodes[i].value;
     }
@@ -165,19 +154,26 @@ public final class Node
 
   /**
    * Return an enumeration of the nodes.
+   * 
    * @return an enumeration of the nodes.
    **/
-  public Enumeration elements()
-  {
+  public Enumeration elements() {
     // a local class that implements the enumeration
     class Enumerate implements Enumeration {
       private Node current;
-      public Enumerate() { this.current = Node.this; }
-      public boolean hasMoreElements() { return (current != null); }
+
+      public Enumerate() {
+        this.current = Node.this;
+      }
+
+      public boolean hasMoreElements() {
+        return (current != null);
+      }
+
       public Object nextElement() {
-	Object retval = current;
-	current = current.next;
-	return retval;
+        Object retval = current;
+        current = current.next;
+        return retval;
       }
     }
     return new Enumerate();
@@ -185,10 +181,10 @@ public final class Node
 
   /**
    * Override the toString method to return the value of the node.
+   * 
    * @return the value of the node.
    **/
-  public String toString()
-  {
+  public String toString() {
     return "value " + value + ", from_count " + fromCount;
   }
 

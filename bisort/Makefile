@@ -1,0 +1,4 @@
+PROGRAM ?= bisort
+
+include ../Makefile
+

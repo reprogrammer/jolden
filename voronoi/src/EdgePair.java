@@ -3,25 +3,21 @@ import java.io.*;
 /**
  * A class that represents an edge pair
  **/
-public class EdgePair 
-{
+public class EdgePair {
   Edge left;
   Edge right;
-  
-  public EdgePair(Edge l, Edge r)
-  {
+
+  public EdgePair(Edge l, Edge r) {
     left = l;
     right = r;
   }
 
-  public Edge getLeft()
-  {
+  public Edge getLeft() {
     return left;
   }
 
-  public Edge getRight() 
-  {
+  public Edge getRight() {
     return right;
   }
 
-}  
+}
