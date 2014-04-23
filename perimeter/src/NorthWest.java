@@ -1,4 +1,3 @@
-
 /**
  * A class representing the North West quadrant of the image.
  **/
