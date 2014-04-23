@@ -1,5 +1,4 @@
 .classpath
 .project
-.settings/
-checkers-quals-java-8.jar
+checker-qual.jar
 javac.jar
